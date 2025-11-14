@@ -22,6 +22,7 @@ export default function AnalyticsDashboard({ tasks }: Props) {
   const velocity = computeVelocityByPriority(baseTasks);
 
   return (
+    <>
     <Card>
       <CardContent>
         <Typography variant="h6" fontWeight={700} gutterBottom>Analytics</Typography>
@@ -67,6 +68,7 @@ export default function AnalyticsDashboard({ tasks }: Props) {
         </Stack>
       </CardContent>
     </Card>
+              </>
   );
 }
 
