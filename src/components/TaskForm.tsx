@@ -63,7 +63,7 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
     !!title.trim() &&
     !duplicateTitle &&
     typeof revenue === 'number' && revenue >= 0 &&
-    typeof timeTaken === 'number' && timeTaken > 0 &&
+    typeof timeTaken === 'number' && timeTaken >= 0 &&
     !!priority &&
     !!status;
 
@@ -76,6 +76,7 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
       priority: ((priority || 'Medium') as Priority),
       status: ((status || 'Todo') as Status),
       notes: notes.trim() || undefined,
+      createdAt: initial ? initial.createdAt : new Date().toISOString(),
       ...(initial ? { id: initial.id } : {}),
     };
     onSubmit(payload);
@@ -111,7 +112,7 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
               type="number"
               value={timeTaken}
               onChange={e => setTimeTaken(e.target.value === '' ? '' : Number(e.target.value))}
-              inputProps={{ min: 1, step: 1 }}
+              inputProps={{ min: 0, step: 0.01 }}
               required
               fullWidth
             />

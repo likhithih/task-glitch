@@ -116,7 +116,7 @@ export function useTasks(): UseTasksState {
   const addTask = useCallback((task: Omit<Task, 'id'> & { id?: string }) => {
     setTasks(prev => {
       const id = task.id ?? crypto.randomUUID();
-      const timeTaken = task.timeTaken <= 0 ? 1 : task.timeTaken; // auto-correct
+      const timeTaken = task.timeTaken < 0 ? 0 : task.timeTaken; // allow 0
       const createdAt = new Date().toISOString();
       const status = task.status;
       const completedAt = status === 'Done' ? createdAt : undefined;
@@ -134,8 +134,8 @@ export function useTasks(): UseTasksState {
         }
         return merged;
       });
-      // Ensure timeTaken remains > 0
-      return next.map(t => (t.id === id && (patch.timeTaken ?? t.timeTaken) <= 0 ? { ...t, timeTaken: 1 } : t));
+      // Ensure timeTaken remains >= 0
+      return next.map(t => (t.id === id && (patch.timeTaken ?? t.timeTaken) < 0 ? { ...t, timeTaken: 0 } : t));
     });
   }, []);
 
